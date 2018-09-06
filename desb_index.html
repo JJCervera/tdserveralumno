@@ -84,14 +84,15 @@ function gen_codigo(){
 
 
 <!-- imagen de una pantalla bloqueada como guía para los alumnos   -->
-<p style="text-align: left;"><img src="bloqueada.jpg" alt="pantalla de bloqueo" width="711" height="289" /></p>
+<p style="text-align: left;"><img src="bloqueada.jpg" alt="pantalla de bloqueo" width="720" height="320" /></p>
 
 <!-- formulario para datos de desbloqueo de la netbook   -->
 <form>
-	<b><font size="3">INGRESÁ LOS DATOS DE LA PANTALLA DE TU NETBOOK</font></b></br>
-	Mirá la imagen superior para guiarte como cargar los datos.</b></br></br>
-	<b><font size="2">ID de Hardware: </font></b> <input type="text" onkeydown="upperCaseF(this)" maxlength=12 size=12 id="hwid" name="hwid" value=""> son 12 caracteres SIN GUIONES, NI ESPACIOS</br>
-	<b><font size="2">Marca de Arranque: </font></b> <input type="text" onkeydown="upperCaseF(this)" maxlength=4 size=4 id="bootTick" name="bootTick" value=""> los últimos 4 caracteres de la marca de arranque o boot tick</br></br>
+	<b><font size="3">INGRESÁ LOS DATOS DE LA PANTALLA DE TU NETBOOK</font><br/><br/>
+
+	Mirá la imagen superior para guiarte como cargar los datos.</b><br/><br/>
+	<b><font size="2">ID de Hardware: </font></b> <input type="text" onkeydown="upperCaseF(this)" maxlength=12 size=12 id="hwid" name="hwid" value=""> son 12 caracteres SIN GUIONES, NI ESPACIOS<br/>
+	<b><font size="2">Marca de Arranque: </font></b> <input type="text" onkeydown="upperCaseF(this)" maxlength=4 size=4 id="bootTick" name="bootTick" value=""> los últimos 4 caracteres de la marca de arranque o boot tick<br/><br/>
 	<input type="submit" onclick="gen_codigo();" value="Generar Código de Desbloqueo">
 </form>
 
