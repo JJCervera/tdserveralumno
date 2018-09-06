@@ -51,28 +51,52 @@ function login_tdserver(){
 	window.open("http://"+IP_tdserver+"/tdserver/student/login_deal.jsp?operatorName="+MAC+"&HWID="+MAC+"&password="+contrasena , "dummyframe");
 }
 
+function isHex(h) {
+var a = parseInt(h,16);
+return (a.toString(16) === h)
+}
+
+// funcion para ir pasando a mayúsculas a medida que se tipea en los cuadros de texto: https://stackoverflow.com/a/37617376/7246780
+function upperCaseF(a){
+    setTimeout(function(){
+        a.value = a.value.toUpperCase();
+    }, 1);
+}
+
 // funcion que solicita la generación del código de desbloqueo al tdserver para alumnos y devuelve la respuesta en una nueva ventana flotante.
 function gen_codigo(){
 	var hwid = document.getElementById("hwid").value;
 	var bootTick = document.getElementById("bootTick").value;
+
+/*	if (isHex(hwid)){
+		 alert('true');
+		 if (isHex(bootTick)){
+			 alert('true');
+		}else{
+			alert('false');
+		}
+	}else{
+		alert('false');
+	} */
 	window.open("http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid="+hwid+"&bootTick="+bootTick,"TU CÓDIGO","left=100,top=100,menubar=no,resizable=no,width=450,height=200,");
 }
 </script> 
 
 
 <!-- imagen de una pantalla bloqueada como guía para los alumnos   -->
-<p style="text-align: left;"><img src="pant_bloqueo.jpg" alt="pantalla de bloqueo" width="500" height="180" /></p>
+<p style="text-align: left;"><img src="bloqueada.jpg" alt="pantalla de bloqueo" width="711" height="289" /></p>
 
 <!-- formulario para datos de desbloqueo de la netbook   -->
 <form>
 	<b><font size="3">INGRESÁ LOS DATOS DE LA PANTALLA DE TU NETBOOK</font></b></br>
 	Mirá la imagen superior para guiarte como cargar los datos.</b></br></br>
-	<b><font size="2">Hardware ID: </font></b> <input type="text" maxlength=12 size=12 id="hwid" name="hwid" value=""> son 12 caracteres EN MAYÚSCULAS, SIN GUIONES, NI ESPACIOS</br>
-	<b><font size="2">Boot Tick: </font></b> <input type="text" maxlength=4 size=4 id="bootTick" name="bootTick" value=""> los últimos 4 caracteres</br></br>
+	<b><font size="2">ID de Hardware: </font></b> <input type="text" onkeydown="upperCaseF(this)" maxlength=12 size=12 id="hwid" name="hwid" value=""> son 12 caracteres SIN GUIONES, NI ESPACIOS</br>
+	<b><font size="2">Marca de Arranque: </font></b> <input type="text" onkeydown="upperCaseF(this)" maxlength=4 size=4 id="bootTick" name="bootTick" value=""> los últimos 4 caracteres de la marca de arranque o boot tick</br></br>
 	<input type="submit" onclick="gen_codigo();" value="Generar Código de Desbloqueo">
 </form>
 
-
+<p id="hwid"></p>
+<p id="bootTick"></p>
 		
 </body>
 </html>
