@@ -28,7 +28,7 @@
 
  <head>
 		<script type="text/javascript" src=config.js></script>
-		<script type="text/javascript" src="./js/jquery_v3.3.1.js"></script>
+		<script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="./js/funciones.js"></script> 
 		
 </head> 
@@ -55,7 +55,7 @@ var ContrasenaE = encryptString(Contrasena); //para versiones nuevas del TDSERVE
 // función que realiza el logueo para iniciar una sesión en el tdserver para alumnos
 function login_tdserver(){
 
-	$(document).ready(function(){
+//	$(document).ready(function(){
 		if (ContrasenaEncriptada){
 			window.open("http://"+IP_tdserver+"/tdserver/student/login_deal.jsp?version=&operatorName="+MAC+"&HWID="+MAC+"&password="+ContrasenaE, "dummyframe");
 			
@@ -63,19 +63,7 @@ function login_tdserver(){
 			window.open("http://"+IP_tdserver+"/tdserver/student/login_deal.jsp?operatorName="+MAC+"&HWID="+MAC+"&password="+Contrasena, "dummyframe");
 		}
 	
-	});
-}
-
-
-function loadDoc() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("demo").innerHTML = this.responseText;
-    }
-  };
-  xhttp.open("GET", "http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick, false);
-  xhttp.send();
+//	});
 }
 
 
@@ -89,9 +77,30 @@ function gen_codigo(){
 	
 	if ((hwid.length == 12)&& (isHex(hwid))){
 			if ((bootTick.length > 0)&& (isHex(bootTick))){
-					// window.open("http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick, '300', '500');
+				var url_cod = "http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick;
+				
+				//	iframe.onload = function() {
+				
+				
+				var ventana_cod = window.open(url_cod, "_blank");
+						
+					
+				
+				//var txt = document.getElementById("frame_codigo");
+				console.log(ventana_cod);	
+				//txt = ventana_cod.getElementById("txt");
+						
+				//	}
+							
+					// var codigo = window.open("view-source:http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick, "_blank");
 					//var wnd = window.open("http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick, "", "_parent");
-					loadDoc();
+					// console.log(codigo);
+					// newWindow.close();
+					 // console.log(iframeContent);
+					// showSource();
+					// alert($('frame_codigo').contents().find('desbloqueo').text());
+					// console.log($('#frame_codigo').contents().find("<center>").html());
+					//  console.log($('frame_codigo')[0].innerHTML);
 					
 			}else{
 				alert("Controlá la marca de arranque.\n\nAyuda:\nLos ceros a la izquierda no son necesarios\nEj: 000004  se puede ingresar solamente  4");
@@ -117,7 +126,9 @@ function gen_codigo(){
 	<input type="submit" onclick="gen_codigo();" value="Generar Código de Desbloqueo">
 </form>
 
-<p id="demo">ACA APARECE TU CODIGO</p>
+<iframe name="frame_codigo" id="frame_codigo"></iframe>
+<div id="source"></div>
+<div id="show"></div>
 			
 </body>
 </html>
