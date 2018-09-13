@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<html lang="es-AR">
+<meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+
+<!-- COMO FINALIDAD DE HACER QUE EL DESBLOQUEO POR PARTE DEL ALUMNO SEA LO MAS FÁCIL E INTUITIVO POSIBLE
+	Y, DEBIDO AL PROBLEMA CONSTANTE DE BLOQUEO DE LAS NETBOOKS POR EL PROBLEMA DE LA FALLA DE LA PILA INTERNA,
+	ME PROPUSE EN REALIZAR UNA PÁGINA PARA ANEXARLA A UN SERVIDOR APACHE SECUNDARIO PARA QUE LOS ALUMNOS 
+	PUEDAN ELLOS MISMOS DESBLOQUEAR SUS PROPIAS NETBOOKS DE UNA FORMA MAS DIRECTA QUE LA SERIE DE PASOS
+	QUE SOLICITA EL TDSERVER PARA ALUMNOS.
+
+	ESTE CONJUNTO DE CÓDIGO NO COMPROMETE LA SEGURIDAD DEL SERVIDOR TDSERVER, YA QUE EN CASO DE TENER QUE 
+	IMPEDIR EL DESBLOQUEO DE ALGUNA NETBOOK, EL TDSERVER CUENTA CON LA OPCIÓN DE MARCARLA COMO "ROBADA" 
+	Y DE ESTA FORMA NO SE LE PUEDA GENERAR LOS CÓDIGOS DE DESBLOQUEO.
+	
+	VER LA SECCIÓN DE DECLARACIÓN DE LOS VALORES DE LAS VARIABLES Y MODIFICAR LOS VALORES A LA NECESIDAD.
+	
+	TENER EN CUENTA QUE YA TENEMOS QUE TENER GENERADA UNA CUENTA COMO ALUMNO PARA PODER REALIZAR EL INGRESO
+	MEDIANTE EL MAC DE ESTE Y SU CONTRASEÑA, POR RAZONES DE SEGURIDAD ES TOTALMENTE RECOMENDABLE QUE NOS
+	BASEMOS EN UNA NETBOOK QUE LA TENGAMOS EN DESUSO PARA GENERAR LA CUENTA Y CONTRASEÑA.
+	
+		
+	JUAN JOSÉ CERVERA ADMIN/RTE/FTE BOP22 Y BOP20 MISIONES ARGENTINA - 05/09/2018
+	rte.bop22@gmail.com 
+-->
+
+
+
+ <head>
+		<script type="text/javascript" src=config.js></script>
+		<script type="text/javascript" src="./js/jquery_v3.3.1.js"></script>
+		<script type="text/javascript" src="./js/funciones.js"></script> 
+		
+</head> 
+
+<body>
+<title>DESBLOQUEOS</title>
+
+<!-- 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> -->
+<meta http-equiv="refresh" content="600" >
+
+<!--  Dummy Frame para mantener la sesión abierta en el tdserver para alumnos -->
+<iframe width="100" height="100" border="0" name="dummyframe" id="dummyframe"></iframe>	
+
+
+<!--  al cargar la pagina se realiza el logueo al tdserver para alumnos de forma automática -->
+<body onload="javascript:login_tdserver();" target="dummyframe">
+
+<script>
+
+
+var ContrasenaE = encryptString(Contrasena); //para versiones nuevas del TDSERVER que encriptan la contraseña.
+
+
+// función que realiza el logueo para iniciar una sesión en el tdserver para alumnos
+function login_tdserver(){
+
+	$(document).ready(function(){
+		if (ContrasenaEncriptada){
+			window.open("http://"+IP_tdserver+"/tdserver/student/login_deal.jsp?version=&operatorName="+MAC+"&HWID="+MAC+"&password="+ContrasenaE, "dummyframe");
+			
+		}else{
+			window.open("http://"+IP_tdserver+"/tdserver/student/login_deal.jsp?operatorName="+MAC+"&HWID="+MAC+"&password="+Contrasena, "dummyframe");
+		}
+	
+	});
+}
+
+
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick, false);
+  xhttp.send();
+}
+
+
+
+// funcion que solicita la generación del código de desbloqueo al tdserver para alumnos y devuelve la respuesta en una nueva ventana flotante.
+function gen_codigo(){
+	var hwid = new String (document.getElementById("hwid").value.toString().toUpperCase());
+	var bootTick = new String (document.getElementById("bootTick").value.toString().toUpperCase());
+	
+//	console.log(hwid); console.log(hwid.length); console.log(bootTick); console.log(bootTick.length);
+	
+	if ((hwid.length == 12)&& (isHex(hwid))){
+			if ((bootTick.length > 0)&& (isHex(bootTick))){
+					// window.open("http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick, '300', '500');
+					//var wnd = window.open("http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick, "", "_parent");
+					loadDoc();
+					
+			}else{
+				alert("Controlá la marca de arranque.\n\nAyuda:\nLos ceros a la izquierda no son necesarios\nEj: 000004  se puede ingresar solamente  4");
+			}
+	}else{
+		alert("Controlá el ID de Hardware.\n\nAyuda:\nSon 12 caracteres No ingreses los guiones - no espacios\nEj si dice 8B-6C-00-10-54-24 solo ingresa 8B6C00105424");
+	}
+}
+
+</script> 
+
+
+<!-- imagen de una pantalla bloqueada como guía para los alumnos   -->
+<p style="text-align: left;"><img src="./img/bloqueada.jpg" alt=".img/pantalla de bloqueo" width="720" height="320" /></p>
+
+<!-- formulario para datos de desbloqueo de la netbook   -->
+<form>
+	<b><font size="3">INGRESÁ LOS DATOS DE LA PANTALLA DE TU NETBOOK</font><br/><br/>
+
+	Mirá la imagen superior para guiarte como cargar los datos.</b><br/><br/>
+	<b><font size="2">ID de Hardware: </font></b> <input type="text"  pattern="([a-fA-F\d]+){12,12}"  maxlength=12 size=12 id="hwid" name="hwid" value="" autofocus> son 12 caracteres SIN GUIONES, NI ESPACIOS<br/>
+	<b><font size="2">Marca de Arranque: </font></b> <input type="text" pattern="([a-fA-F\d]+){1,6}" maxlength=6 size=6 id="bootTick" name="bootTick" value=""> los últimos 4 caracteres de la marca de arranque o boot tick<br/><br/>
+	<input type="submit" onclick="gen_codigo();" value="Generar Código de Desbloqueo">
+</form>
+
+<p id="demo">ACA APARECE TU CODIGO</p>
+			
+</body>
+</html>
