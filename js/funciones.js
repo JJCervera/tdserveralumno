@@ -27,7 +27,7 @@ var lowerorupper = 0;
 //ASCII or Unicode//before is chrsz
 var ascoruni = 8;
 
-//Calculate the SHA-1 of an array of big-endian words, and a bit length 
+//Calculate the SHA-1 of an array of big-endian words, and a bit length
 
 function coreOfSha(blockArray)
    {

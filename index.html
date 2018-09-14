@@ -68,7 +68,7 @@ function gen_codigo(){
 			if ((bootTick.length > 0)&& (isHex(bootTick))){
 				var url_cod = "http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick;
 				window.open(url_cod, "_blank");
-				alert("SI NO SE TE GENERÓ UN CÓDIGO\n\nControlá que el ID de Hardware que escribiste\nsea el correcto.
+				alert("SI NO SE TE GENERÓ UN CÓDIGO\nO SE ABRIÓ UNA PANTALLA DE LOGIN:\n\nControlá que el ID de Hardware que escribiste\nsea el correcto de TU netbook.\n\n\n\n");
 
 			}else{
 				alert("Controlá la marca de arranque.\n\nAyuda:\nLos ceros a la izquierda no son necesarios\nEj: 000004  se puede ingresar solamente  4");
