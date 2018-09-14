@@ -3,25 +3,16 @@
 <html lang="es-AR">
 <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
 
-<!-- COMO FINALIDAD DE HACER QUE EL DESBLOQUEO POR PARTE DEL ALUMNO SEA LO MAS FÁCIL E INTUITIVO POSIBLE
-	Y, DEBIDO AL PROBLEMA CONSTANTE DE BLOQUEO DE LAS NETBOOKS POR EL PROBLEMA DE LA FALLA DE LA PILA INTERNA,
-	ME PROPUSE EN REALIZAR UNA PÁGINA PARA ANEXARLA A UN SERVIDOR APACHE SECUNDARIO PARA QUE LOS ALUMNOS 
-	PUEDAN ELLOS MISMOS DESBLOQUEAR SUS PROPIAS NETBOOKS DE UNA FORMA MAS DIRECTA QUE LA SERIE DE PASOS
-	QUE SOLICITA EL TDSERVER PARA ALUMNOS.
+<!-- 	Página WEB que se realiza la solicitud de códigos de desbloqueos al TDServer del colegio, mas precisamente al "TDSERVER para Alumnos".
+		La conexión se realiza mediante un Hardware ID (MAC) y contraseña de alumno. Por lo que primero hay que generar una cuenta de este tipo. 
 
-	ESTE CONJUNTO DE CÓDIGO NO COMPROMETE LA SEGURIDAD DEL SERVIDOR TDSERVER, YA QUE EN CASO DE TENER QUE 
-	IMPEDIR EL DESBLOQUEO DE ALGUNA NETBOOK, EL TDSERVER CUENTA CON LA OPCIÓN DE MARCARLA COMO "ROBADA" 
-	Y DE ESTA FORMA NO SE LE PUEDA GENERAR LOS CÓDIGOS DE DESBLOQUEO.
-	
-	VER LA SECCIÓN DE DECLARACIÓN DE LOS VALORES DE LAS VARIABLES Y MODIFICAR LOS VALORES A LA NECESIDAD.
-	
-	TENER EN CUENTA QUE YA TENEMOS QUE TENER GENERADA UNA CUENTA COMO ALUMNO PARA PODER REALIZAR EL INGRESO
-	MEDIANTE EL MAC DE ESTE Y SU CONTRASEÑA, POR RAZONES DE SEGURIDAD ES TOTALMENTE RECOMENDABLE QUE NOS
-	BASEMOS EN UNA NETBOOK QUE LA TENGAMOS EN DESUSO PARA GENERAR LA CUENTA Y CONTRASEÑA.
+		OJO!: *** NO SE DEBE UTILIZAR UN USUARIO ADMINISTRADOR NI OPERADOR DEL TDSERVER ****
+
+		configuraciones posibles editando el archivo "config.js"
 	
 		
-	JUAN JOSÉ CERVERA ADMIN/RTE/FTE BOP22 Y BOP20 MISIONES ARGENTINA - 05/09/2018
-	rte.bop22@gmail.com 
+		JUAN JOSÉ CERVERA ADMIN/RTE/FTE BOP22 Y BOP20 MISIONES ARGENTINA - 05/09/2018
+		rte.bop22@gmail.com 
 -->
 
 
@@ -40,7 +31,7 @@
 <meta http-equiv="refresh" content="600" >
 
 <!--  Dummy Frame para mantener la sesión abierta en el tdserver para alumnos -->
-<iframe width="100" height="100" border="0" name="dummyframe" id="dummyframe"></iframe>	
+<iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"></iframe>	
 
 
 <!--  al cargar la pagina se realiza el logueo al tdserver para alumnos de forma automática -->
@@ -73,35 +64,12 @@ function gen_codigo(){
 	var hwid = new String (document.getElementById("hwid").value.toString().toUpperCase());
 	var bootTick = new String (document.getElementById("bootTick").value.toString().toUpperCase());
 	
-//	console.log(hwid); console.log(hwid.length); console.log(bootTick); console.log(bootTick.length);
-	
 	if ((hwid.length == 12)&& (isHex(hwid))){
 			if ((bootTick.length > 0)&& (isHex(bootTick))){
 				var url_cod = "http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick;
-				
-				//	iframe.onload = function() {
-				
-				
-				var ventana_cod = window.open(url_cod, "_blank");
-						
-					
-				
-				//var txt = document.getElementById("frame_codigo");
-				console.log(ventana_cod);	
-				//txt = ventana_cod.getElementById("txt");
-						
-				//	}
-							
-					// var codigo = window.open("view-source:http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick, "_blank");
-					//var wnd = window.open("http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick, "", "_parent");
-					// console.log(codigo);
-					// newWindow.close();
-					 // console.log(iframeContent);
-					// showSource();
-					// alert($('frame_codigo').contents().find('desbloqueo').text());
-					// console.log($('#frame_codigo').contents().find("<center>").html());
-					//  console.log($('frame_codigo')[0].innerHTML);
-					
+				window.open(url_cod, "_blank");
+				alert("SI NO SE TE GENERÓ UN CÓDIGO\n\nControlá que el ID de Hardware que escribiste\nsea el correcto.
+
 			}else{
 				alert("Controlá la marca de arranque.\n\nAyuda:\nLos ceros a la izquierda no son necesarios\nEj: 000004  se puede ingresar solamente  4");
 			}
@@ -125,10 +93,6 @@ function gen_codigo(){
 	<b><font size="2">Marca de Arranque: </font></b> <input type="text" pattern="([a-fA-F\d]+){1,6}" maxlength=6 size=6 id="bootTick" name="bootTick" value=""> los últimos 4 caracteres de la marca de arranque o boot tick<br/><br/>
 	<input type="submit" onclick="gen_codigo();" value="Generar Código de Desbloqueo">
 </form>
-
-<iframe name="frame_codigo" id="frame_codigo"></iframe>
-<div id="source"></div>
-<div id="show"></div>
-			
+		
 </body>
 </html>
