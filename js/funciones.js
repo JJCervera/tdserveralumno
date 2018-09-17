@@ -1,15 +1,6 @@
 // función para controlar si el texto ingresado está en formato HEXADECIMAL
-function isHex(h) {   //https://www.sitepoint.com/community/t/how-to-check-if-string-is-hexadecimal/162739/7
-var a
-var a = parseInt(h,16);
-if (a.toString(16) === h.toLowerCase()){
-	return true;
-}else{
-	return false;
-}
-}
  
-function cheq_hwid(h){  //^[0-9A-F]+$    "([a-fA-F\d]+){12,12}"
+function cheq_hwid(h){  //^[0-9A-F]+$    "([a-fA-F\d]+){12,12}"  //modificacion de https://stackoverflow.com/a/28535655/7246780
 var re = new RegExp("^[0-9A-Fa-f]+$");
 if (re.test(h)) {
     console.log("HW Valid");
@@ -20,7 +11,7 @@ if (re.test(h)) {
 }
 }
 
-function cheq_bt(h){
+function cheq_bt(h){ //modificacion de https://stackoverflow.com/a/28535655/7246780
 var re = new RegExp("(^[0-9A-Fa-f]+$){1,6}");
 if (re.test(h)) {
     console.log("BT Valid");
