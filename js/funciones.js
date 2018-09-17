@@ -1,8 +1,36 @@
 // función para controlar si el texto ingresado está en formato HEXADECIMAL
 function isHex(h) {   //https://www.sitepoint.com/community/t/how-to-check-if-string-is-hexadecimal/162739/7
+var a
 var a = parseInt(h,16);
-return (a.toString(16) ===h.toLowerCase())
+if (a.toString(16) === h.toLowerCase()){
+	return true;
+}else{
+	return false;
 }
+}
+ 
+function cheq_hwid(h){  //^[0-9A-F]+$    "([a-fA-F\d]+){12,12}"
+var re = new RegExp("^[0-9A-Fa-f]+$");
+if (re.test(h)) {
+    console.log("HW Valid");
+    return true;
+} else {
+    console.log("HW Invalid");
+    return false;
+}
+}
+
+function cheq_bt(h){
+var re = new RegExp("(^[0-9A-Fa-f]+$){1,6}");
+if (re.test(h)) {
+    console.log("BT Valid");
+    return true;
+} else {
+    console.log("BT Invalid");
+    return false;
+}
+}
+
 
 // funcion para ir pasando a mayúsculas a medida que se tipea en los cuadros de texto: https://stackoverflow.com/a/37617376/7246780
 function upperCaseF(a){
