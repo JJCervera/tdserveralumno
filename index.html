@@ -91,8 +91,8 @@ function gen_codigo(){
 	<b><font size="3">INGRESÁ LOS DATOS DE LA PANTALLA DE TU NETBOOK</font><br/><br/>
 
 	Mirá la imagen superior para guiarte como cargar los datos.</b><br/><br/>
-	<b><font size="2">ID de Hardware: </font></b> <input type="text"  pattern="([a-fA-F\d]+){12,12}"  maxlength=12 size=12 id="hwid" name="hwid" value="" autofocus required> son 12 caracteres SIN GUIONES, NI ESPACIOS<br/>
-	<b><font size="2">Marca de Arranque: </font></b> <input type="text" pattern="([a-fA-F\d]+){1,6}" maxlength=6 size=6 id="bootTick" name="bootTick" value="" required> los últimos 4 caracteres de la marca de arranque o boot tick<br/><br/>
+	<b><font size="2">ID de Hardware: </font></b> <input type="text"  pattern="([a-fA-F\d]+){12,12}"  maxlength=12 size=12 id="hwid" name="hwid" value="" autofocus required><br/>
+	<b><font size="2">Marca de Arranque: </font></b> <input type="text" pattern="([a-fA-F\d]+){1,6}" maxlength=6 size=6 id="bootTick" name="bootTick" value="" required><br/><br/>
 	<input id="enviar" type="submit" onclick="gen_codigo();" value="Generar Código de Desbloqueo">
 </form>
 		
