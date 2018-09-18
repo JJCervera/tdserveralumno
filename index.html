@@ -53,7 +53,10 @@ function login_tdserver(){
 		}else{
 			window.open("http://"+IP_tdserver+"/tdserver/student/login_deal.jsp?operatorName="+MAC+"&HWID="+MAC+"&password="+Contrasena, "dummyframe");
 		}
-	
+		
+		if (!pedirSerie){
+			document.getElementById("serie").disabled = 'true';
+		}
 //	});
 }
 
@@ -63,23 +66,33 @@ function login_tdserver(){
 function gen_codigo(){
 	var hwid = new String (document.getElementById("hwid").value.toString().toUpperCase());
 	var bootTick = new String (document.getElementById("bootTick").value.toString().toUpperCase());
+	var serie = new String (document.getElementById("serie").value.toString().toUpperCase());
 	console.log(hwid);
 	console.log(bootTick);
-	
+	console.log(serie);
+	var url_cod = "http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick;
+					
 	if ((hwid.length == 12) && (cheq_hwid(hwid))){
 			// console.log("ishex: "+hwid);
 			if ((bootTick.length > 0) && (cheq_bt(bootTick))){
-				// console.log("ishex: "+bootTick);
-				var url_cod = "http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick;
-				window.open(url_cod, "_blank");
-				alert("SI NO SE TE GENERÓ UN CÓDIGO\nO SE ABRIÓ UNA PANTALLA DE LOGIN:\n\nControlá que el ID de Hardware que escribiste\nsea el correcto de TU netbook.\n\n\n\n");
-
+				if (!pedirSerie){
+					// console.log("ishex: "+bootTick);
+					window.open(url_cod, "_blank");
+					
+				}else{
+					if(document.getElementById('serie').validity.valid){
+						window.open(url_cod, "_blank");
+					}else{
+						alert("Controlá que el número de SERIE sea Correcto.\n\nAyuda:\nEl número de serie está en la parte de abajo de la netbook\ny suele comenzar con AA, por ejemplo: AA1234567890" );
+					}
+				}
 			}else{
 				alert("Controlá la marca de arranque.\n\nAyuda:\nLos ceros a la izquierda no son necesarios\nEj: 000004  se puede ingresar solamente  4");
 			}
 	}else{
 		alert("Controlá el ID de Hardware.\n\nAyuda:\nSon 12 caracteres No ingreses los guiones - no espacios\nEj si dice 8B-6C-00-10-54-24 solo ingresa 8B6C00105424");
 	}
+	alert("SI NO SE TE GENERÓ UN CÓDIGO\nO SE ABRIÓ UNA PANTALLA DE LOGIN:\n\nControlá que el ID de Hardware que escribiste\nsea el correcto de TU netbook.\n\n\n\n");
 }
 </script>
 
@@ -91,6 +104,7 @@ function gen_codigo(){
 	<b><font size="3">INGRESÁ LOS DATOS DE LA PANTALLA DE TU NETBOOK</font><br/><br/>
 
 	Mirá la imagen superior para guiarte como cargar los datos.</b><br/><br/>
+	<b><font size="2">Nro. de SERIE de la netbook: </font></b> <input id="serie" type="text"  pattern="([a-aA-A\d]+){12,12}"  maxlength=12 size=12 id="serie" name="serie" value="" autofocus required><br/>
 	<b><font size="2">ID de Hardware: </font></b> <input type="text"  pattern="([a-fA-F\d]+){12,12}"  maxlength=12 size=12 id="hwid" name="hwid" value="" autofocus required><br/>
 	<b><font size="2">Marca de Arranque: </font></b> <input type="text" pattern="([a-fA-F\d]+){1,6}" maxlength=6 size=6 id="bootTick" name="bootTick" value="" required><br/><br/>
 	<input id="enviar" type="submit" onclick="gen_codigo();" value="Generar Código de Desbloqueo">
