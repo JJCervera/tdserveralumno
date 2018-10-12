@@ -58,13 +58,18 @@ function login_tdserver(){
 }
 
 
+
 // funcion que solicita la generación del código de desbloqueo al tdserver para alumnos y devuelve la respuesta en una nueva ventana flotante. 
 function gen_codigo(){
 	var hwid = new String (document.getElementById("hwid").value.toString().toUpperCase());
 	var bootTick = new String (document.getElementById("bootTick").value.toString().toUpperCase());
+	console.log(hwid);
+	console.log(bootTick);
 	
-	if ((hwid.length == 12)&& (isHex(hwid))){
-			if ((bootTick.length > 0)&& (isHex(bootTick))){
+	if ((hwid.length == 12) && (cheq_hwid(hwid))){
+			// console.log("ishex: "+hwid);
+			if ((bootTick.length > 0) && (cheq_bt(bootTick))){
+				// console.log("ishex: "+bootTick);
 				var url_cod = "http://"+IP_tdserver+"/tdserver/student/unlock_code_deal.jsp?hwid=" + hwid + "&bootTick=" + bootTick;
 				// window.open(url_cod, "_blank");
 				$.ajax({
@@ -88,7 +93,6 @@ function gen_codigo(){
 				error: function(result) {
 					alert("ERROR DE COMUNICACIÓN\n\nTal vez el servidor está apagado.\n\n");
 				},
-
 				});
 
 			}else{
@@ -98,22 +102,20 @@ function gen_codigo(){
 		alert("Controlá el ID de Hardware.\n\nAyuda:\nSon 12 caracteres No ingreses los guiones - no espacios\nEj si dice 8B-6C-00-10-54-24 solo ingresa 8B6C00105424");
 	}
 }
-
-</script> 
-
+</script>
 
 <!-- imagen de una pantalla bloqueada como guía para los alumnos   -->
 <p style="text-align: left;"><img src="./img/bloqueada.jpg" alt=".img/pantalla de bloqueo" width="720" height="320" /></p>
 
 <!-- formulario para datos de desbloqueo de la netbook   -->
-<form>
+<form id="formulario">
 	<b><font size="3">INGRESÁ LOS DATOS DE LA PANTALLA DE TU NETBOOK</font><br/><br/>
 
 	Mirá la imagen superior para guiarte como cargar los datos.</b><br/><br/>
-	<b><font size="2">ID de Hardware: </font></b> <input type="text"  pattern="([a-fA-F\d]+){12,12}"  maxlength=12 size=12 id="hwid" name="hwid" value="" autofocus> son 12 caracteres SIN GUIONES, NI ESPACIOS<br/>
-	<b><font size="2">Marca de Arranque: </font></b> <input type="text" pattern="([a-fA-F\d]+){1,6}" maxlength=6 size=6 id="bootTick" name="bootTick" value=""> los últimos 4 caracteres de la marca de arranque o boot tick<br/><br/>
-	<input type="submit" onclick="gen_codigo();" value="Generar Código de Desbloqueo">
+	<b><font size="2">ID de Hardware: </font></b> <input type="text"  pattern="([a-fA-F\d]+){12,12}"  maxlength=12 size=12 id="hwid" name="hwid" value="" autofocus required><br/>
+	<b><font size="2">Marca de Arranque: </font></b> <input type="text" pattern="([a-fA-F\d]+){1,6}" maxlength=6 size=6 id="bootTick" name="bootTick" value="" required><br/><br/>
+	<input id="enviar" type="submit" onclick="gen_codigo();" value="Generar Código de Desbloqueo">
 </form>
- 		
+		
 </body>
 </html>
